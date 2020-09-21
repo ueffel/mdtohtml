@@ -1,4 +1,4 @@
-module md
+module mdtohtml
 
 go 1.15
 

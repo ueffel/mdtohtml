@@ -5,7 +5,7 @@ import (
 	"fmt"
 	gohtml "html"
 	"io/ioutil"
-	"md/embedimg"
+	"mdtohtml/embedimg"
 	"os"
 	"path/filepath"
 	"strings"
