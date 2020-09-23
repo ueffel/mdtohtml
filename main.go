@@ -117,8 +117,7 @@ func makeHTML(path string, overwrite bool) error {
 
 var (
 	buf               = new(bytes.Buffer)
-	preContent string = `
-	<!DOCTYPE html>
+	preContent string = `<!DOCTYPE html>
 <html>
 <head>
   <title>{{File}}</title>
