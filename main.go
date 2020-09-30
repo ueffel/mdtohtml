@@ -59,9 +59,12 @@ func makeHTML(path string, overwrite bool) error {
 					html.WithClasses(true),
 				),
 			),
+			extension.Linkify,
+			extension.Strikethrough,
 			embedimg.EmbedImg,
 		),
 		goldmark.WithParserOptions(
+			parser.WithAttribute(),
 			parser.WithAutoHeadingID(),
 		),
 		goldmark.WithRendererOptions(
@@ -121,8 +124,6 @@ var (
 <html>
 <head>
   <title>{{File}}</title>
-  <link href="/github-markdown.css" rel="stylesheet">
-  <link href="/github.css" rel="stylesheet">
   <style>
 @font-face {
   font-family: octicons-link;
