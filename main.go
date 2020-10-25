@@ -102,9 +102,18 @@ func makeHTML(path string, overwrite bool) error {
 	if err != nil {
 		return err
 	}
-	buf.WriteString(strings.ReplaceAll(preContent, "{{File}}", gohtml.EscapeString(filepath.Base(path))))
-	md.Convert(input, buf)
-	buf.WriteString(postContent)
+	_, err = buf.WriteString(strings.ReplaceAll(preContent, "{{File}}", gohtml.EscapeString(filepath.Base(path))))
+	if err != nil {
+		return err
+	}
+	err = md.Convert(input, buf)
+	if err != nil {
+		return err
+	}
+	_, err = buf.WriteString(postContent)
+	if err != nil {
+		return err
+	}
 	err = os.Chdir(oldCwd)
 	if err != nil {
 		return err
