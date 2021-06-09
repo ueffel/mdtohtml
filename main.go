@@ -1181,6 +1181,21 @@ var (
 		opacity: 1;
 		text-decoration: none;
 	}
+	.copy-button {
+		position: absolute;
+		display: none;
+		right: .5em;
+		top: .5em;
+		font-size: 1.1em;
+		padding: .2em;
+		font-family: inherit;
+	}
+	.code-container {
+		position: relative;
+	}
+	.code-container:hover .copy-button {
+		display: block;
+	}
 	</style>
 </head>
 <body>
@@ -1208,6 +1223,45 @@ var (
 			anchor.append(text);
 			item.prepend(anchor);
 		});
+
+		let codeBlocks = document.getElementsByTagName("pre");
+		for(let i = 0; i < codeBlocks.length; i++)
+		{
+			codeBlock = codeBlocks.item(i);
+			let container = document.createElement("div");
+			container.classList.add("code-container");
+			let btn = document.createElement("button");
+			btn.classList.add("copy-button");
+			btn.title = "Copy to clipboard";
+			let text = document.createTextNode("✂");
+			btn.append(text);
+			btn.onclick = function (event)
+			{
+				copyToClipboard(codeBlocks[i], event);
+			}
+			codeBlock.parentNode.insertBefore(container, codeBlock);
+			container.appendChild(codeBlock);
+			container.appendChild(btn);
+		}
+
+		function copyToClipboard(sender, event)
+		{
+			let range;
+			if (document.selection)
+			{
+				range = document.body.createTextRange();
+				range.moveToElementText(sender);
+				range.select();
+			}
+			else if (window.getSelection)
+			{
+				range = document.createRange();
+				range.selectNodeContents(sender);
+				window.getSelection().removeAllRanges();
+				window.getSelection().addRange(range);
+			}
+			document.execCommand("copy");
+		}
 	</script>
 </body>
 </html>
