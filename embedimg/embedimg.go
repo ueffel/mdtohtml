@@ -2,7 +2,6 @@ package embedimg
 
 import (
 	"encoding/base64"
-	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -44,13 +43,14 @@ func (r *HTMLRenderer) renderImage(w util.BufWriter, source []byte, node ast.Nod
 	if r.Unsafe || !html.IsDangerousURL(n.Destination) {
 		path := string(n.Destination)
 		if _, err := os.Stat(path); err == nil || !os.IsNotExist(err) {
-			w.WriteString("data:")
-			by, _ := ioutil.ReadFile(path)
-			mimeType := http.DetectContentType(by)
-			w.WriteString(mimeType)
-			w.WriteString(";base64,")
-			enc := base64.NewEncoder(base64.RawStdEncoding, w)
-			enc.Write(by)
+			_, _ = w.WriteString("data:")
+			if by, err := os.ReadFile(path); err == nil {
+				mimeType := http.DetectContentType(by)
+				_, _ = w.WriteString(mimeType)
+				_, _ = w.WriteString(";base64,")
+				enc := base64.NewEncoder(base64.RawStdEncoding, w)
+				_, _ = enc.Write(by)
+			}
 		} else {
 			_, _ = w.Write(util.EscapeHTML(util.URLEscape(n.Destination, true)))
 		}

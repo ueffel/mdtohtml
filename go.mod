@@ -10,5 +10,5 @@ require (
 	github.com/spf13/pflag v1.0.5
 	github.com/yuin/goldmark v1.4.1
 	github.com/yuin/goldmark-highlighting v0.0.0-20210516132338-9216f9c5aa01
-	golang.org/x/sys v0.0.0-20210817190340-bfb29a6856f2 // indirect
+	golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac // indirect
 )

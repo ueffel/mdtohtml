@@ -5,7 +5,6 @@ import (
 	_ "embed"
 	"fmt"
 	gohtml "html"
-	"io/ioutil"
 	"mdtohtml/embedimg"
 	"os"
 	"path/filepath"
@@ -52,7 +51,7 @@ func main() {
 
 func makeHTML(path string, overwrite bool) error {
 	buf.Reset()
-	input, err := ioutil.ReadFile(path)
+	input, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}
@@ -91,7 +90,6 @@ func makeHTML(path string, overwrite bool) error {
 				fmt.Printf("'%s' already exists. Overwrite? (y/N): ", resultPath)
 				n, _ := fmt.Scanln(&response)
 				if n > 0 && response == "n" || n == 0 {
-					invalidResponse = false
 					return nil
 				}
 				if n > 0 && response == "y" {
@@ -128,7 +126,7 @@ func makeHTML(path string, overwrite bool) error {
 		return err
 	}
 	fmt.Printf("Writing '%s'\n", resultPath)
-	err = ioutil.WriteFile(resultPath, buf.Bytes(), 0644)
+	err = os.WriteFile(resultPath, buf.Bytes(), 0o644)
 	if err != nil {
 		return err
 	}
