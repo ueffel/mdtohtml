@@ -7,7 +7,7 @@ Local image files are embedded with base64 in the image tags.
 ## Installation
 
 ```shell
-go get github.com/ueffel/mdtohtml
+go install github.com/ueffel/mdtohtml@latest
 ```
 
 ## Usage
