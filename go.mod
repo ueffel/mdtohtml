@@ -1,4 +1,4 @@
-module mdtohtml
+module github.com/ueffel/mdtohtml
 
 go 1.16
 
