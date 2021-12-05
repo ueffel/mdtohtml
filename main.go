@@ -243,7 +243,11 @@ var (
 				window.getSelection().removeAllRanges();
 				window.getSelection().addRange(range);
 			}
-			document.execCommand("copy");
+			if (navigator.clipboard && window.isSecureContext) {
+				navigator.clipboard.writeText(range.toString());
+			} else {
+				document.execCommand("copy");
+			}
 		}
 	</script>
 </body>
