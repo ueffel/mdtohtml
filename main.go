@@ -4,12 +4,12 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	gohtml "html"
+	"html"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/alecthomas/chroma/formatters/html"
+	chromaHtml "github.com/alecthomas/chroma/formatters/html"
 	"github.com/spf13/pflag"
 	"github.com/ueffel/mdtohtml/embedimg"
 	"github.com/yuin/goldmark"
@@ -20,10 +20,10 @@ import (
 )
 
 //go:embed github.css
-var githubCss string
+var githubCSS []byte
 
 //go:embed github-markdown.css
-var githubMarkdownCss string
+var githubMarkdownCSS []byte
 
 func main() {
 	help := pflag.BoolP("help", "h", false, "Show this help text")
@@ -62,7 +62,7 @@ func makeHTML(path string, overwrite bool) error {
 			extension.Footnote,
 			highlighting.NewHighlighting(
 				highlighting.WithFormatOptions(
-					html.WithClasses(true),
+					chromaHtml.WithClasses(true),
 				),
 			),
 			extension.Linkify,
@@ -107,9 +107,27 @@ func makeHTML(path string, overwrite bool) error {
 	if err != nil {
 		return err
 	}
-	header := strings.ReplaceAll(preContent, "{{File}}", gohtml.EscapeString(filepath.Base(path)))
-	header = strings.ReplaceAll(header, "{{Style-Placeholder}}", githubMarkdownCss+githubCss)
-	_, err = buf.WriteString(header)
+	_, err = buf.WriteString(beforeTitle)
+	if err != nil {
+		return err
+	}
+	_, err = buf.WriteString(html.EscapeString(filepath.Base(path)))
+	if err != nil {
+		return err
+	}
+	_, err = buf.WriteString(afterTitle)
+	if err != nil {
+		return err
+	}
+	_, err = buf.Write(githubMarkdownCSS)
+	if err != nil {
+		return err
+	}
+	_, err = buf.Write(githubCSS)
+	if err != nil {
+		return err
+	}
+	_, err = buf.WriteString(beforeRender)
 	if err != nil {
 		return err
 	}
@@ -117,7 +135,7 @@ func makeHTML(path string, overwrite bool) error {
 	if err != nil {
 		return err
 	}
-	_, err = buf.WriteString(postContent)
+	_, err = buf.WriteString(afterRender)
 	if err != nil {
 		return err
 	}
@@ -135,14 +153,16 @@ func makeHTML(path string, overwrite bool) error {
 }
 
 var (
-	buf        = new(bytes.Buffer)
-	preContent = `<!DOCTYPE html>
+	buf         = new(bytes.Buffer)
+	beforeTitle = `<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>{{File}}</title>
+	<title>`
+	afterTitle = `</title>
 	<style>
-{{Style-Placeholder}}
+`
+	beforeRender = `
 	.markdown-body {
 		box-sizing: border-box;
 		min-width: 200px;
@@ -184,7 +204,7 @@ var (
 <body>
 	<div class="markdown-body">
 `
-	postContent = `	</div>
+	afterRender = `	</div>
 	<script>
 		let headlines = []
 		let tagNames = ["h1", "h2", "h3", "h4", "h5", "h6"];
