@@ -158,6 +158,7 @@ var (
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>`
 	afterTitle = `</title>
 	<style>
@@ -169,6 +170,11 @@ var (
 		max-width: 980px;
 		margin: 0 auto;
 		padding: 45px;
+	}
+	@media (max-width: 767px) {
+		.markdown-body {
+			padding: 15px;
+		}
 	}
 	.anchor-link {
 		opacity: 0;
@@ -208,7 +214,8 @@ var (
 	<script>
 		let headlines = []
 		let tagNames = ["h1", "h2", "h3", "h4", "h5", "h6"];
-		tagNames.forEach(function(tag, index) {
+		tagNames.forEach(function(tag, index)
+		{
 			let elements = document.getElementsByTagName(tag);
 			for(let i = 0; i < elements.length; i++)
 			{
@@ -263,9 +270,11 @@ var (
 				window.getSelection().removeAllRanges();
 				window.getSelection().addRange(range);
 			}
-			if (navigator.clipboard && window.isSecureContext) {
+			if (navigator.clipboard && window.isSecureContext)
+			{
 				navigator.clipboard.writeText(range.toString());
-			} else {
+			} else
+			{
 				document.execCommand("copy");
 			}
 		}
