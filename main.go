@@ -58,7 +58,6 @@ func makeHTML(path string, overwrite bool) error {
 
 	md := goldmark.New(
 		goldmark.WithExtensions(
-			extension.GFM,
 			extension.Footnote,
 			highlighting.NewHighlighting(
 				highlighting.WithFormatOptions(
@@ -67,6 +66,7 @@ func makeHTML(path string, overwrite bool) error {
 			),
 			extension.Linkify,
 			extension.Strikethrough,
+			extension.TaskList,
 			embedimg.EmbedImg,
 		),
 		goldmark.WithParserOptions(
@@ -75,6 +75,7 @@ func makeHTML(path string, overwrite bool) error {
 		),
 		goldmark.WithRendererOptions(
 			gmhtml.WithUnsafe(),
+			gmhtml.WithXHTML(),
 		),
 	)
 
@@ -252,6 +253,16 @@ var (
 			codeBlock.parentNode.insertBefore(container, codeBlock);
 			container.appendChild(codeBlock);
 			container.appendChild(btn);
+		}
+
+		let listItems = document.getElementsByTagName("li");
+		for(let i = 0; i < listItems.length; i++)
+		{
+			let fc = listItems[i].firstChild;
+			if (fc.tagName === "INPUT" && fc.getAttribute("type") === "checkbox")
+			{
+				listItems[i].classList.add("task-list-item");
+			}
 		}
 
 		function copyToClipboard(sender, event)
