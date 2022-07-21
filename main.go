@@ -12,6 +12,7 @@ import (
 	chromaHtml "github.com/alecthomas/chroma/formatters/html"
 	"github.com/spf13/pflag"
 	"github.com/ueffel/mdtohtml/embedimg"
+	"github.com/ueffel/mdtohtml/tasklistitem"
 	"github.com/yuin/goldmark"
 	highlighting "github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
@@ -68,6 +69,7 @@ func makeHTML(path string, overwrite bool) error {
 			extension.Strikethrough,
 			extension.TaskList,
 			embedimg.EmbedImg,
+			tasklistitem.TaskListItemClass,
 		),
 		goldmark.WithParserOptions(
 			parser.WithAttribute(),
@@ -253,16 +255,6 @@ var (
 			codeBlock.parentNode.insertBefore(container, codeBlock);
 			container.appendChild(codeBlock);
 			container.appendChild(btn);
-		}
-
-		let listItems = document.getElementsByTagName("li");
-		for(let i = 0; i < listItems.length; i++)
-		{
-			let fc = listItems[i].firstChild;
-			if (fc.tagName === "INPUT" && fc.getAttribute("type") === "checkbox")
-			{
-				listItems[i].classList.add("task-list-item");
-			}
 		}
 
 		function copyToClipboard(sender, event)

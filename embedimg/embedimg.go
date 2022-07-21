@@ -80,6 +80,7 @@ type embedImg struct{}
 // files and writes them as base64 in the src attribute
 var EmbedImg = &embedImg{}
 
+// Extend extends the markdown renderer
 func (e *embedImg) Extend(m goldmark.Markdown) {
 	m.Renderer().AddOptions(renderer.WithNodeRenderers(
 		util.Prioritized(NewHTMLRenderer(), 500),
