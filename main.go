@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	mermaid "go.abhg.dev/goldmark/mermaid"
 	chromaHtml "github.com/alecthomas/chroma/formatters/html"
 	"github.com/spf13/pflag"
 	"github.com/ueffel/mdtohtml/embedimg"
@@ -70,6 +71,7 @@ func makeHTML(path string, overwrite bool) error {
 			extension.TaskList,
 			embedimg.EmbedImg,
 			tasklistitem.TaskListItemClass,
+			&mermaid.Extender{MermaidJS: "<embed>"},
 		),
 		goldmark.WithParserOptions(
 			parser.WithAttribute(),
