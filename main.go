@@ -9,16 +9,16 @@ import (
 	"path/filepath"
 	"strings"
 
-	mermaid "go.abhg.dev/goldmark/mermaid"
-	chromaHtml "github.com/alecthomas/chroma/formatters/html"
+	chromaHtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/spf13/pflag"
 	"github.com/ueffel/mdtohtml/embedimg"
 	"github.com/ueffel/mdtohtml/tasklistitem"
 	"github.com/yuin/goldmark"
-	highlighting "github.com/yuin/goldmark-highlighting"
+	highlighting "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	gmhtml "github.com/yuin/goldmark/renderer/html"
+	mermaid "go.abhg.dev/goldmark/mermaid"
 )
 
 //go:embed github.css
