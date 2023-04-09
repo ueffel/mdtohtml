@@ -60,6 +60,7 @@ func makeHTML(path string, overwrite bool) error {
 
 	md := goldmark.New(
 		goldmark.WithExtensions(
+			extension.GFM,
 			extension.Footnote,
 			highlighting.NewHighlighting(
 				highlighting.WithFormatOptions(
